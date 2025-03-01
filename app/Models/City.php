@@ -10,6 +10,8 @@ class City extends Model
     use HasFactory;
     protected $table = 'city';
     protected $primaryKey = 'city_id';
+    public  $timestamps =false;
+
 
     protected $fillable = [
         'city', 'country_id', 'last_update'

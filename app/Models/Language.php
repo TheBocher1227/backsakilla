@@ -9,6 +9,7 @@ class Language extends Model
     use HasFactory;
     protected $table = 'language';
     protected $primaryKey = 'language_id';
+    public  $timestamps =false;
     protected $fillable = [
         'name', 'last_update'
     ];

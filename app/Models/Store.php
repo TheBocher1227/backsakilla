@@ -9,6 +9,7 @@ class Store extends Model
     use HasFactory;
     protected $table = 'store';
     protected $primaryKey = 'store_id';
+    protected $timestamps =false;
 
     protected $fillable = [
         'manager_staff_id', 'address_id', 'last_update'

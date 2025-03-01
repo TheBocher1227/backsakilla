@@ -9,6 +9,7 @@ class FilmCategory extends Model
     use HasFactory;
 
     protected $table = 'film_category';
+    public  $timestamps =false;
     protected $fillable = [
         'film_id', 'category_id', 'last_update'
     ];

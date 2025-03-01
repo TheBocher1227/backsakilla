@@ -8,6 +8,7 @@ class FilmText extends Model
 {
     use HasFactory;
     protected $table = 'film_text';
+    public  $timestamps =false;
 
     protected $fillable = [
         'film_id', 'title', 'description'
