@@ -18,18 +18,19 @@ class Rental extends Model
 
     public function customer()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Customer::class, 'customer_id', 'customer_id');
     }
-
+    
     public function inventory()
     {
-        return $this->belongsTo(Inventory::class);
+        return $this->belongsTo(Inventory::class, 'inventory_id', 'inventory_id');
     }
-
+    
     public function staff()
     {
-        return $this->belongsTo(Staff::class);
+        return $this->belongsTo(Staff::class, 'staff_id', 'staff_id');
     }
+    
 
     public function payments()
     {

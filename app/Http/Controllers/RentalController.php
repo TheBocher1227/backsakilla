@@ -9,7 +9,22 @@ class RentalController extends Controller
 {
     public function index(Request $request)
     {
-        $rentals = Rental::with(['customer', 'inventory', 'staff'])->paginate($request->input('per_page', 10));
+        $rentals = Rental::with(['customer', 'staff'])->get();
+    
+        $rentals = $rentals->map(function ($rental) {
+            return [
+                'rental_id' => $rental->rental_id,
+                'rental_date' => $rental->rental_date,
+                'inventory_id' => $rental->inventory_id,
+                'customer_id' => $rental->customer_id,
+                'return_date' => $rental->return_date,
+                'staff_id' => $rental->staff_id,
+                'last_update' => $rental->last_update,
+                'customer_name' => optional($rental->customer)->first_name . ' ' . optional($rental->customer)->last_name,
+                'staff_name' => optional($rental->staff)->first_name . ' ' . optional($rental->staff)->last_name,
+            ];
+        });
+    
         return response()->json($rentals);
     }
 
