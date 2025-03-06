@@ -17,7 +17,12 @@ class Country extends Model
     ];
 
     public function cities()
-    {
-        return $this->hasMany(City::class);
-    }
+{
+    return $this->hasMany(
+        City::class,
+        'country_id',   // Clave foránea en la tabla `city`
+        'country_id'    // Clave primaria en la tabla `country`
+    );
+}
+
 }

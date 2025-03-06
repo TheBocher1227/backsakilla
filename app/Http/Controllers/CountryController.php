@@ -9,7 +9,7 @@ class CountryController extends Controller
 {
     public function index(Request $request)
     {
-        $countries = Country::with(['cities'])->paginate($request->input('per_page', 10));
+        $countries = Country::with(['cities'])->get();
         return response()->json($countries);
     }
 

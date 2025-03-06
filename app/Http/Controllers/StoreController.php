@@ -9,7 +9,7 @@ class StoreController extends Controller
 {
     public function index(Request $request)
     {
-        $stores = Store::with(['manager', 'address'])->paginate($request->input('per_page', 10));
+        $stores = Store::with(['manager', 'address'])->get();
         return response()->json($stores);
     }
 

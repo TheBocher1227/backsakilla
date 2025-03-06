@@ -13,7 +13,7 @@ class Staff extends Model
     public  $timestamps =false;
 
     protected $fillable = [
-        'first_name', 'last_name', 'address_id', 'email', 'store_id', 'active', 'username', 'password', 'last_update'
+        'first_name', 'last_name', 'address_id', 'email', 'store_id', 'active', 'username', 'password', 'last_update','picture'
     ];
 
     public function store()

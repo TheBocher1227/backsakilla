@@ -9,7 +9,7 @@ class LanguageController extends Controller
 {
     public function index(Request $request)
     {
-        $languages = Language::with(['films'])->paginate($request->input('per_page', 10));
+        $languages = Language::with(['films'])->get();
         return response()->json($languages);
     }
 

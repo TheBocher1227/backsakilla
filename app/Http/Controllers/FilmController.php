@@ -8,9 +8,10 @@ class FilmController extends Controller
 {
     public function index(Request $request)
     {
-        $films = Film::with(['language', 'actors', 'categories'])->paginate($request->input('per_page', 10));
+        $films = Film::with(['language', 'actors', 'categories'])->get();
         return response()->json($films);
     }
+    
 
     public function store(Request $request)
     {

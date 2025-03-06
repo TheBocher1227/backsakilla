@@ -9,6 +9,7 @@ class FilmCategory extends Model
     use HasFactory;
 
     protected $table = 'film_category';
+
     public  $timestamps =false;
     protected $fillable = [
         'film_id', 'category_id', 'last_update'
@@ -16,12 +17,20 @@ class FilmCategory extends Model
 
     public function film()
     {
-        return $this->belongsTo(Film::class);
+        return $this->belongsTo(
+            Film::class,
+            'film_id',      // Columna en film_category
+            'film_id'       // Columna en film (PK de Film)
+        );
     }
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(
+            Category::class,
+            'category_id',     // Columna en film_category
+            'category_id'      // Columna en category (PK de Category)
+        );
     }
 }
 

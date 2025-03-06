@@ -17,8 +17,14 @@ class Category extends Model
     ];
 
     public function films()
-    {
-        return $this->belongsToMany(Film::class, 'film_category');
-    }
+{
+    return $this->belongsToMany(
+        Film::class,
+        'film_category',
+        'category_id', // columna en film_category que referencia a Category
+        'film_id'      // columna en film_category que referencia a Film
+    );
+}
+
 }
 

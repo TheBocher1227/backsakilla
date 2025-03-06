@@ -17,7 +17,11 @@ class Film extends Model
 
     public function language()
     {
-        return $this->belongsTo(Language::class);
+        return $this->belongsTo(
+            Language::class,
+            'language_id', // 🔑 Columna en la tabla `film`
+            'language_id'  // 🔑 Columna en la tabla `language`
+        );
     }
 
     public function actors()

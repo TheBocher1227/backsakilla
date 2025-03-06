@@ -9,7 +9,7 @@ class StaffController extends Controller
 {
     public function index(Request $request)
     {
-        $staff = Staff::with(['store', 'address'])->paginate($request->input('per_page', 10));
+        $staff = Staff::with(['store', 'address'])->get();
         return response()->json($staff);
     }
 
