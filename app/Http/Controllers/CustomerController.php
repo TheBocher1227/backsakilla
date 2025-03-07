@@ -16,7 +16,7 @@ class CustomerController extends Controller
 			"first_name" => $customer->first_name,
 			"last_name" => $customer->last_name,
 			"email"=>$customer->email,
-			"address_id" => $$customer->address_id,
+			"address_id" => $customer->address_id,
 			"activebool" =>$customer ->activebool,
 			"create_date" =>$customer->create_date,
 			"last_update"=> $customer->last_update,
