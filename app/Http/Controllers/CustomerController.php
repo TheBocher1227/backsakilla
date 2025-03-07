@@ -6,7 +6,28 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-  
+    public function index(Request $request)
+    {
+        $customers = Customer::with(['store', 'address'])->get();
+        $customers = $customers->map(function ($customer){
+            return[
+            'customer_id' =>$customer->customer_id,
+            'store_id'=>$customer->store_id,
+			"first_name" => $customer->first_name,
+			"last_name" => $customer->last_name,
+			"email"=>$customer->email,
+			"address_id" => $$customer->address_id,
+			"activebool" =>$customer ->activebool,
+			"create_date" =>$customer->create_date,
+			"last_update"=> $customer->last_update,
+			"active" => $customer->active,
+			//"store"=> optional($customer->store)->first_name . ' ' . optional($customer->customer)->last_name,
+			//"address" => optional($customer->address)->.' '.
+
+            ];
+        });
+        return response()->json($customers);
+    }
 
    
    
