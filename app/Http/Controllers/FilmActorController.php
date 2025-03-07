@@ -8,7 +8,7 @@ class FilmActorController extends Controller
 {
     public function index(Request $request)
     {
-        $filmActors = FilmActor::with(['actor', 'film'])->paginate($request->input('per_page', 10));
+        $filmActors = FilmActor::with(['actor', 'film'])->get();
         return response()->json($filmActors);
     }
 

@@ -6,9 +6,28 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
+
+  
     public function index(Request $request)
     {
-        $payments = Payment::with(['customer', 'staff', 'rental'])->paginate($request->input('per_page', 10));
+        $payments = Payment::with(['customer', 'staff', 'rental'])->get();
+        $payments = $payments->map(function ($payment){
+            return[
+
+                "payment_id"=>$payment->payment_id,
+			"customer_id"=>$payment->customer_id,
+			"staff_id"=>$payment->staff_id,
+			"rental_id"=>$payment->rental_id,
+			"amount"=>$payment->amount,
+			"payment_date"=>$payment->payment_date,
+			"customer"=>optional($payment->customer)->first_name . ' ' . optional($payment->customer)->last_name,
+			"staff"=> optional($payment->staff)->first_name . ' ' . optional($payment->staff)->last_name,
+			//"rental"=>optional($payment->rental)->first_name . ' ' . optional($payment->rental)->last_name,
+			//"store"=> optional($customer->store)->first_name . ' ' . optional($customer->customer)->last_name,
+			//"address" => optional($customer->address)->.' '.
+
+            ];
+        });
         return response()->json($payments);
     }
 

@@ -9,7 +9,7 @@ class FilmCategoryController extends Controller
 {
     public function index(Request $request)
     {
-        $filmCategories = FilmCategory::with(['film', 'category'])->paginate($request->input('per_page', 10));
+        $filmCategories = FilmCategory::with(['film', 'category'])->get();
         return response()->json($filmCategories);
     }
 

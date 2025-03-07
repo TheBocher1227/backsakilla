@@ -8,7 +8,21 @@ class AddressController extends Controller
 {
     public function index(Request $request)
     {
-        $addresses = Address::with(['city'])->paginate($request->input('per_page', 10));
+        $addresses = Address::with(['city'])->get();
+        $addresses = $addresses->map(function ($address){
+            return[
+                "address_id"=>$address->address_id,
+			"address"=>$address->address,
+			"address2"=>$address->address2,
+			"district"=>$address->district,
+			"city_id"=>$address->city_id,
+			"postal_code"=>$address->postal_code,
+			"phone"=>$address->phone,
+			"last_update"=>$address->last_update,
+			"city"=>optional($address->city)->city,
+
+            ];
+        });
         return response()->json($addresses);
     }
 

@@ -9,7 +9,7 @@ class InventoryController extends Controller
 {
     public function index(Request $request)
     {
-        $inventory = Inventory::with(['film', 'store'])->paginate($request->input('per_page', 10));
+        $inventory = Inventory::with(['film', 'store'])->get();
         return response()->json($inventory);
     }
 

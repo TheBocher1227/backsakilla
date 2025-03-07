@@ -8,7 +8,7 @@ class FilmTextController extends Controller
 {
     public function index(Request $request)
     {
-        $filmTexts = FilmText::with(['film'])->paginate($request->input('per_page', 10));
+        $filmTexts = FilmText::with(['film'])->get();
         return response()->json($filmTexts);
     }
 

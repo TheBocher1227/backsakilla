@@ -8,7 +8,7 @@ class CityController extends Controller
 {
     public function index(Request $request)
     {
-        $cities = City::with(['country'])->paginate($request->input('per_page', 10));
+        $cities = City::with(['country'])->get();
         return response()->json($cities);
     }
 
