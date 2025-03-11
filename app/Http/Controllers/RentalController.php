@@ -4,13 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Rental;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class RentalController extends Controller
 {
+    public function __construct()
+    {
+        Route::bind('rental', function ($value) {
+            return Rental::where('rental_id', $value)->firstOrFail();
+        });
+    }
+
     public function index(Request $request)
     {
-        $rentals = Rental::with(['customer', 'staff'])->get();
-    
+        $rentals = Rental::with(['customer', 'staff', 'inventory'])->get();
+
         $rentals = $rentals->map(function ($rental) {
             return [
                 'rental_id' => $rental->rental_id,
@@ -22,9 +30,10 @@ class RentalController extends Controller
                 'last_update' => $rental->last_update,
                 'customer_name' => optional($rental->customer)->first_name . ' ' . optional($rental->customer)->last_name,
                 'staff_name' => optional($rental->staff)->first_name . ' ' . optional($rental->staff)->last_name,
+                'film_title' => optional($rental->inventory)->film->title ?? null,
             ];
         });
-    
+
         return response()->json($rentals);
     }
 
@@ -32,10 +41,10 @@ class RentalController extends Controller
     {
         $request->validate([
             'rental_date' => 'required|date',
-            'inventory_id' => 'required|exists:inventory,id',
-            'customer_id' => 'required|exists:customers,id',
+            'inventory_id' => 'required|exists:inventory,inventory_id',
+            'customer_id' => 'required|exists:customer,customer_id',
             'return_date' => 'nullable|date',
-            'staff_id' => 'required|exists:staff,id',
+            'staff_id' => 'required|exists:staff,staff_id',
         ]);
 
         $rental = Rental::create($request->all());
@@ -51,10 +60,10 @@ class RentalController extends Controller
     {
         $request->validate([
             'rental_date' => 'date',
-            'inventory_id' => 'exists:inventory,id',
-            'customer_id' => 'exists:customers,id',
+            'inventory_id' => 'exists:inventory,inventory_id',
+            'customer_id' => 'exists:customer,customer_id',
             'return_date' => 'nullable|date',
-            'staff_id' => 'exists:staff,id',
+            'staff_id' => 'exists:staff,staff_id',
         ]);
 
         $rental->update($request->all());

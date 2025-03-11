@@ -28,7 +28,9 @@ class FilmController extends Controller
             'special_features' => 'nullable|string',
         ]);
 
-        $film = Film::create($request->all());
+        $data = $request->all();
+        $data['status'] = true;
+        $film = Film::create($data);
         return response()->json($film, 201);
     }
 
@@ -58,7 +60,7 @@ class FilmController extends Controller
 
     public function destroy(Film $film)
     {
-        $film->delete();
-        return response()->json(null, 204);
+        $film->update(['status' => false]);
+        return response()->json(['message' => 'Película desactivada correctamente'], 200);
     }
 }

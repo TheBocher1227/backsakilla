@@ -27,7 +27,9 @@ class ActorController extends Controller
             'last_name' => 'required|string|max:45',
         ]);
 
-        $actor = Actor::create($request->all());
+        $data = $request->all();
+        $data['status'] = true;
+        $actor = Actor::create($data);
         return response()->json($actor, 201);
     }
 
@@ -49,7 +51,7 @@ class ActorController extends Controller
 
     public function destroy(Actor $actor)
     {
-        $actor->delete();
-        return response()->json(null, 204);
+        $actor->update(['status' => false]);
+        return response()->json(['message' => 'Actor desactivado correctamente'], 200);
     }
 }

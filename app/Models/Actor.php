@@ -13,8 +13,16 @@ class Actor extends Model
     public $incrementing = true;
 
     protected $fillable = [
-        'first_name', 'last_name', 'last_update'
+        'first_name', 'last_name', 'last_update', 'status'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('active', function ($query) {
+            $query->where('status', true);
+        });
+    }
 
     public function films()
     {
