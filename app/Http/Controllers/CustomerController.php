@@ -48,7 +48,7 @@ class CustomerController extends Controller
         ]);
 
         $data = $request->all();
-        $data['status'] = true;
+        $data['active'] = true;
         $data['create_date'] = now();
         $customer = Customer::create($data);
         return response()->json($customer, 201);
@@ -76,7 +76,7 @@ class CustomerController extends Controller
 
     public function destroy(Customer $customer)
     {
-        $customer->update(['status' => false]);
+        $customer->update(['active' => false]);
         return response()->json(['message' => 'Cliente desactivado correctamente'], 200);
     }
 }

@@ -9,7 +9,7 @@ class InventoryController extends Controller
 {
     public function index(Request $request)
     {
-        $inventory = Inventory::with(['film', 'store'])->get();
+        $inventory = Inventory::with(['film:film_id,title', 'store'])->get();
         return response()->json($inventory);
     }
 
@@ -26,7 +26,7 @@ class InventoryController extends Controller
 
     public function show(Inventory $inventory)
     {
-        return response()->json($inventory->load(['film', 'store']));
+        return response()->json($inventory->load(['film:film_id,title', 'store']));
     }
 
     public function update(Request $request, Inventory $inventory)

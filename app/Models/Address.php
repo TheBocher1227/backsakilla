@@ -8,7 +8,7 @@ class Address extends Model
 {
     use HasFactory;
     protected $table = 'address';
-    protected $primaryKey = 'adress_id';
+    protected $primaryKey = 'address_id';
     public  $timestamps =false;
 
     protected $fillable = [

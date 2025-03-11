@@ -13,14 +13,14 @@ class Customer extends Model
     public  $timestamps =false;
 
     protected $fillable = [
-        'store_id', 'first_name', 'last_name', 'email', 'address_id', 'active', 'create_date', 'last_update', 'status'
+        'store_id', 'first_name', 'last_name', 'email', 'address_id', 'active', 'create_date', 'last_update'
     ];
 
     protected static function boot()
     {
         parent::boot();
         static::addGlobalScope('active', function ($query) {
-            $query->where('status', true);
+            $query->where('active', true);
         });
     }
 

@@ -10,11 +10,12 @@ class City extends Model
     use HasFactory;
     protected $table = 'city';
     protected $primaryKey = 'city_id';
-    public  $timestamps =false;
-
+    public $timestamps = false;
 
     protected $fillable = [
-        'city', 'country_id', 'last_update'
+        'city',
+        'country_id',
+        'last_update'
     ];
 
     public function country()
@@ -24,6 +25,6 @@ class City extends Model
 
     public function addresses()
     {
-        return $this->hasMany(Address::class);
+        return $this->hasMany(Address::class, 'city_id', 'city_id');
     }
 }
