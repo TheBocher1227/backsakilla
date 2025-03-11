@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Staff extends Model
 {
@@ -11,6 +12,13 @@ class Staff extends Model
     protected $table = 'staff';
     protected $primaryKey = 'staff_id';
     public  $timestamps =false;
+
+    protected static function booted()
+    {
+        static::addGlobalScope('active', function (Builder $builder) {
+            $builder->where('active', true);
+        });
+    }
 
     protected $fillable = [
         'first_name', 'last_name', 'address_id', 'email', 'store_id', 'active', 'username', 'password', 'last_update','picture'

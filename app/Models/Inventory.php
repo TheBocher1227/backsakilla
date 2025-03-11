@@ -28,7 +28,7 @@ class Inventory extends Model
 
     public function rentals()
     {
-        return $this->hasMany(Rental::class);
+        return $this->hasMany(Rental::class, 'inventory_id', 'inventory_id');
     }
 }
 
