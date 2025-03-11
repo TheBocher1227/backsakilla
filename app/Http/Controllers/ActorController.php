@@ -3,9 +3,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Actor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class ActorController extends Controller
 {
+    public function __construct()
+    {
+        Route::bind('actor', function ($value) {
+            return Actor::where('actor_id', $value)->firstOrFail();
+        });
+    }
+
     public function index(Request $request)
     {
         $actors = Actor::with(['films'])->get();

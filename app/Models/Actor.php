@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Actor extends Model
 {
     use HasFactory;
-    protected $table = 'actor'; 
+    protected $table = 'actor';
     protected $primaryKey = 'actor_id';
-    public  $timestamps =false;
+    public $timestamps = false;
+    public $incrementing = true;
 
     protected $fillable = [
         'first_name', 'last_name', 'last_update'

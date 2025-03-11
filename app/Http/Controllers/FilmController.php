@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Film;
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\Respone;
 class FilmController extends Controller
 {
     public function index(Request $request)
@@ -11,7 +11,7 @@ class FilmController extends Controller
         $films = Film::with(['language', 'actors', 'categories'])->get();
         return response()->json($films);
     }
-    
+
 
     public function store(Request $request)
     {
@@ -19,7 +19,7 @@ class FilmController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'release_year' => 'required|integer',
-            'language_id' => 'required|exists:languages,id',
+            'language_id' => 'required|exists:language,language_id',
             'rental_duration' => 'required|integer',
             'rental_rate' => 'required|numeric',
             'length' => 'required|integer',
@@ -43,7 +43,7 @@ class FilmController extends Controller
             'title' => 'string|max:255',
             'description' => 'nullable|string',
             'release_year' => 'integer',
-            'language_id' => 'exists:languages,id',
+            'language_id' => 'exists:language,language_id',
             'rental_duration' => 'integer',
             'rental_rate' => 'numeric',
             'length' => 'integer',
