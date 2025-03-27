@@ -5,13 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Staff extends Model
+class Staff extends Authenticatable implements JWTSubject
 {
     use HasFactory;
     protected $table = 'staff';
     protected $primaryKey = 'staff_id';
     public  $timestamps =false;
+    protected $hidden = ['password'];
 
     protected static function booted()
     {
@@ -42,5 +45,15 @@ class Staff extends Model
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

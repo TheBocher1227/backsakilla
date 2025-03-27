@@ -34,6 +34,8 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\AuthController;
+
 
 // Actor Routes
 Route::get('actors', [ActorController::class, 'index']);
@@ -138,3 +140,6 @@ Route::post('stores', [StoreController::class, 'store']);
 Route::get('stores/{store}', [StoreController::class, 'show']);
 Route::put('stores/{store}', [StoreController::class, 'update']);
 Route::delete('stores/{store}', [StoreController::class, 'destroy']);
+
+Route::post('/login-step1', [AuthController::class, 'loginStep1']);
+Route::post('/login-step2', [AuthController::class, 'loginStep2']);

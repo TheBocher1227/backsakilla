@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Staff;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+
 
 class StaffController extends Controller
 {
@@ -26,6 +28,7 @@ class StaffController extends Controller
         ]);
 
         $data = $request->all();
+        $data['password']= Hash::make($data['password']);
         $data['active'] = true;
         $data['last_update'] = now();
 
