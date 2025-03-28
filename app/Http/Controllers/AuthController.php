@@ -14,33 +14,45 @@ use App\Mail\TwoFactorCodeMail;
 class AuthController extends Controller
 {
     public function loginStep1(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string'
-        ]);
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required|string'
+    ]);
 
-        $staff = Staff::where('email', $request->email)->first();
+    $staff = Staff::where('email', $request->email)->first();
 
-        if (!$staff || !Hash::check($request->password, $staff->password)) {
-            return response()->json(['error' => 'Credenciales inválidas'], 401);
-        }
-
-        
-        $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-        
-        TwoFactorCode::where('staff_id', $staff->staff_id)->delete(); 
-
-        $twoFactorCode = TwoFactorCode::create([
-            'staff_id' => $staff->staff_id,
-            'code' => $code,
-            'expires_at' => Carbon::now()->addMinutes(10)
-        ]);
-
-        Mail::to($staff->email)->send(new TwoFactorCodeMail($code));
-
-        return response()->json(['message' => 'Código de verificación enviado']);
+    if (!$staff) {
+        return response()->json([
+            'error' => 'Correo no encontrado',
+            'email' => $request->email,
+            'password' => $request->password // ⚠ Solo para pruebas, no recomendable en producción
+        ], 401);
     }
+
+    if (!Hash::check($request->password, $staff->password)) {
+        return response()->json([
+            'error' => 'Contraseña incorrecta',
+            'email' => $request->email,
+            'password' => $request->password // ⚠ Solo para pruebas, no recomendable en producción
+        ], 401);
+    }
+
+    $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+
+    TwoFactorCode::where('staff_id', $staff->staff_id)->delete();
+
+    $twoFactorCode = TwoFactorCode::create([
+        'staff_id' => $staff->staff_id,
+        'code' => $code,
+        'expires_at' => Carbon::now()->addMinutes(10)
+    ]);
+
+    //Mail::to($staff->email)->send(new TwoFactorCodeMail($code));
+
+    return response()->json(['message' => 'Código de verificación enviado']);
+}
+
 
     public function loginStep2(Request $request)
     {
