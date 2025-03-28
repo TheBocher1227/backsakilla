@@ -14,15 +14,6 @@ class Staff extends Authenticatable implements JWTSubject
     protected $table = 'staff';
     protected $primaryKey = 'staff_id';
     public  $timestamps =false;
-    protected $hidden = ['password'];
-
-    protected static function booted()
-    {
-        static::addGlobalScope('active', function (Builder $builder) {
-            $builder->where('active', true);
-        });
-    }
-
     protected $fillable = [
         'first_name', 'last_name', 'address_id', 'email', 'store_id', 'active', 'username', 'password', 'last_update','picture'
     ];
@@ -37,6 +28,10 @@ class Staff extends Authenticatable implements JWTSubject
         return $this->belongsTo(Address::class);
     }
 
+    public function rol()
+    {
+        return $this->belongsTo(Role::class);
+    }
     public function rentals()
     {
         return $this->hasMany(Rental::class);

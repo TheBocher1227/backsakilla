@@ -14,9 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
 
 
 use App\Http\Controllers\ActorController;
@@ -37,6 +35,9 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\AuthController;
 
 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 // Actor Routes
 Route::get('actors', [ActorController::class, 'index']);
 Route::post('actors', [ActorController::class, 'store']);
@@ -143,3 +144,7 @@ Route::delete('stores/{store}', [StoreController::class, 'destroy']);
 
 Route::post('/login-step1', [AuthController::class, 'loginStep1']);
 Route::post('/login-step2', [AuthController::class, 'loginStep2']);
+
+Route::get('/me', function (Request $request) {
+    return $request->user();
+})->middleware('auth.jwt');

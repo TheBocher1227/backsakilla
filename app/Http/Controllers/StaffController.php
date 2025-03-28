@@ -24,10 +24,11 @@ class StaffController extends Controller
         'store_id' => 'required|exists:store,store_id',
         'username' => 'required|string|max:16|unique:staff',
         'password' => 'required|string|min:8',
+        'role_id' => 'required|exists:roles,id'
     ]);
 
     $data = $request->all();
-    $data['password'] = Hash::make(value: $request->password); 
+    $data['password'] = Hash::make(value: $request->password);
     $data['active'] = true;
     $data['last_update'] = now();
 
@@ -50,6 +51,7 @@ class StaffController extends Controller
             'store_id' => 'exists:store,store_id',
             'username' => 'string|max:16|unique:staff,username,' . $staff->staff_id . ',staff_id',
             'password' => 'string|min:8',
+            'role_id' => 'exists:roles,id'
         ]);
 
         $data = $request->all();
