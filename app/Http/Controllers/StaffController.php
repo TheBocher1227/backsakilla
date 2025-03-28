@@ -6,7 +6,6 @@ use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-
 class StaffController extends Controller
 {
     public function index(Request $request)
@@ -16,25 +15,25 @@ class StaffController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'first_name' => 'required|string|max:45',
-            'last_name' => 'required|string|max:45',
-            'address_id' => 'required|exists:address,address_id',
-            'email' => 'required|email|unique:staff',
-            'store_id' => 'required|exists:store,store_id',
-            'username' => 'required|string|max:16|unique:staff',
-            'password' => 'required|string|min:8',
-        ]);
+{
+    $request->validate([
+        'first_name' => 'required|string|max:45',
+        'last_name' => 'required|string|max:45',
+        'address_id' => 'required|exists:address,address_id',
+        'email' => 'required|email|unique:staff',
+        'store_id' => 'required|exists:store,store_id',
+        'username' => 'required|string|max:16|unique:staff',
+        'password' => 'required|string|min:8',
+    ]);
 
-        $data = $request->all();
-        $data['password']= Hash::make($data['password']);
-        $data['active'] = true;
-        $data['last_update'] = now();
+    $data = $request->all();
+    $data['password'] = Hash::make(value: $request->password); 
+    $data['active'] = true;
+    $data['last_update'] = now();
 
-        $staff = Staff::create($data);
-        return response()->json($staff, 201);
-    }
+    $staff = Staff::create($data);
+    return response()->json($staff, 201);
+}
 
     public function show(Staff $staff)
     {
