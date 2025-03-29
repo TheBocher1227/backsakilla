@@ -145,6 +145,10 @@ Route::delete('stores/{store}', [StoreController::class, 'destroy']);
 Route::post('/login-step1', [AuthController::class, 'loginStep1']);
 Route::post('/login-step2', [AuthController::class, 'loginStep2']);
 
+Route::post('/restore/password', [AuthController::class, 'restorePasswordEmail']);
+
+Route::post('/change/password', [AuthController::class, 'changePassword']);
+
 Route::get('/me', function (Request $request) {
     return $request->user();
 })->middleware('auth.jwt');

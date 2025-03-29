@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\RestorePassword;
 use App\Models\Staff;
 use App\Models\TwoFactorCode;
 use Illuminate\Http\Request;
@@ -37,12 +38,12 @@ class AuthController extends Controller
 
         $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
-        $staff->code = $code;
+        $staff->code = Hash::make($code);
         $staff->save();
 
         Mail::to($staff->email)->send(new TwoFactorCodeMail($code));
 
-        return response()->json(['message' => 'Código de verificación enviado'],);
+        return response()->json(['message' => 'Código de verificación enviado']);
     }
 
     public function loginStep2(Request $request)
@@ -62,10 +63,10 @@ class AuthController extends Controller
             return response()->json(['error' => 'Usuario no encontrado'], 404);
         }
 
-        if($staff->code != $request->code){
+        if (!Hash::check($request->code, $staff->code)) {
             return response()->json(['error' => 'Código de verificación inválido'], 403);
         }
-        if(!$token = JWTAuth::fromUser($staff)){
+        if (!$token = JWTAuth::fromUser($staff)) {
             return response()->json(['error' => 'Error al crear el token'], 403);
         }
 
@@ -76,5 +77,50 @@ class AuthController extends Controller
             'staff' => $staff
 
         ]);
+    }
+
+    public function restorePasswordEmail(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'email' => 'required|email'
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json($validation->errors(), 400);
+        }
+        $staff = Staff::where('email', $request->email)->first();
+        if (!$staff) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+        $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        $staff->code = Hash::make($code);
+        $staff->save();
+        Mail::to($staff->email)->send(new RestorePassword($code));
+        return response()->json(['message' => 'Correo enviado']);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|confirm|string',
+            'code' => 'required|string'
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json($validation->errors(), 400);
+        }
+        $staff = Staff::where('email', $request->email)->first();
+        if (!$staff) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+
+        if (!Hash::check($request->code, $staff->code)) {
+            return response()->json(['error' => 'Código de verificación inválido'], 403);
+        }
+
+        $staff->password = Hash::make($request->password);
+        $staff->save();
+        return response()->json(['message' => 'Contraseña actualizada']);
     }
 }
