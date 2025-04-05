@@ -103,7 +103,7 @@ class AuthController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required|confirm|string',
+            'password' => 'required|confirmed|string',
             'code' => 'required|string'
         ]);
 

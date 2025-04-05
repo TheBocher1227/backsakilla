@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class StaffController extends Controller
 {
@@ -16,16 +17,20 @@ class StaffController extends Controller
 
     public function store(Request $request)
 {
-    $request->validate([
+    $validation = Validator::make($request->all(), [
         'first_name' => 'required|string|max:45',
         'last_name' => 'required|string|max:45',
         'address_id' => 'required|exists:address,address_id',
-        'email' => 'required|email|unique:staff',
+        'email' => 'required|email|unique:staff,email',
         'store_id' => 'required|exists:store,store_id',
-        'username' => 'required|string|max:16|unique:staff',
+        'username' => 'required|string|max:16|unique:staff,username',
         'password' => 'required|string|min:8',
-        'role_id' => 'required|exists:roles,id'
+        'rol_id' => 'required|exists:roles,id'
     ]);
+
+    if($validation->fails()) {
+        return response()->json($validation->errors(), 422);
+    }
 
     $data = $request->all();
     $data['password'] = Hash::make(value: $request->password);
